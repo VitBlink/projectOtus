@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <title>Site V1</title>
+   <style>
+       body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 16px; }
+       input, textarea { width: 100%; padding: 6px; margin: 4px 0; box-sizing: border-box; }
+       button { padding: 8px 16px; cursor: pointer; }
+       table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+       th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+       th { background: #f0f0f0; }
+       #msg { margin-top: 10px; color: green; }
+   </style>
+</head>
+<body>
+   <h1>Страница номер 1</h1>
+
+   <form id="f">
+       <p><input name="name" placeholder="Имя" required></p>
+       <p><input name="age" type="number" placeholder="Возраст"></p>
+       <p><textarea name="message" placeholder="Сообщение" rows="3"></textarea></p>
+       <button type="submit">Отправить</button>
+   </form>
+
+   <div id="msg"></div>
+
+   <h2>Записи в базе</h2>
+   <table id="tbl">
+       <thead>
+           <tr><th>ID</th><th>Имя</th><th>Возраст</th><th>Сообщение</th><th>Создано</th></tr>
+       </thead>
+       <tbody></tbody>
+   </table>
+
+<script>
+async function loadTable() {
+   const res = await fetch('/api/list');
+   const rows = await res.json();
+   const tbody = document.querySelector('#tbl tbody');
+   tbody.innerHTML = '';
+   for (const r of rows) {
+       const tr = document.createElement('tr');
+       tr.innerHTML = `
+           <td>${r.id}</td>
+           <td>${r.name}</td>
+           <td>${r.age ?? ''}</td>
+           <td>${r.message ?? ''}</td>
+           <td>${r.created_at ?? ''}</td>
+       `;
+       tbody.appendChild(tr);
+   }
+}
+
+document.getElementById('f').onsubmit = async (e) => {
+   e.preventDefault();
+   const data = Object.fromEntries(new FormData(e.target));
+   if (data.age === '') data.age = null;
+   else data.age = parseInt(data.age);
+
+   const res = await fetch('/api/save', {
+       method: 'POST',
+       headers: {'Content-Type': 'application/json'},
+       body: JSON.stringify(data)
+   });
+   const result = await res.json();
+   document.getElementById('msg').textContent = 'Сохранено, id = ' + result.id;
+   e.target.reset();
+   loadTable();
+};
+
+loadTable();
+</script>
+</body>
+</html>
