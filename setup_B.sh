@@ -1,7 +1,7 @@
 #!/bin/bash
 # setup_B.sh — машина B (Apache + Rust + MySQL 8.4 мастер)
 # Запуск: sudo bash setup_B.sh IP_A IP_C
-# Ожидает в /tmp/: server_app, index_v1.html, index_v2.html
+# Ожидает в /tmp/: server_app, index1.html, index2.html
 
 set -e
 
