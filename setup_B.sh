@@ -19,7 +19,7 @@ IP_A="$1"
 IP_C="$2"
 
 echo "=== Проверка файлов в /tmp ==="
-for f in /tmp/server_app/tmp/index_v1.html /tmp/index_v2.html; do
+for f in /tmp/server_app/tmp/index1.html /tmp/index2.html; do
    if [ ! -f "$f" ]; then
        echo "❌ Не найден: $f"
        exit 1
@@ -118,8 +118,8 @@ grep -q "Listen 8081" /etc/apache2/ports.conf || echo "Listen 8081" >> /etc/apac
 grep -q "Listen 8082" /etc/apache2/ports.conf || echo "Listen 8082" >> /etc/apache2/ports.conf
 
 mkdir -p /var/www/site_v1 /var/www/site_v2
-cp /tmp/index_v1.html /var/www/site_v1/index.html
-cp /tmp/index_v2.html /var/www/site_v2/index.html
+cp /tmp/index1.html /var/www/site_v1/index.html
+cp /tmp/index2.html /var/www/site_v2/index.html
 
 cat > /etc/apache2/sites-available/site_v1.conf <<'EOF'
 <VirtualHost *:8081>
