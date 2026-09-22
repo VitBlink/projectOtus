@@ -3,6 +3,7 @@
 # Запуск: sudo bash setup_A_monitoring_elk.sh
 # .deb (и/или .tar.gz с ними) для Grafana и ELK должны быть в /tmp/deb/
 
+
 set -e
 
 if [ "$EUID" -ne 0 ]; then
