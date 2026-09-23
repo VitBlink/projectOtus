@@ -120,8 +120,8 @@ if dpkg -l | grep -q "^ii  elasticsearch"; then
    # 1. Уменьшаем heap
    mkdir -p /etc/elasticsearch/jvm.options.d
    cat > /etc/elasticsearch/jvm.options.d/heap.options <<'EOF'
--Xms256m
--Xmx256m
+-Xms1g
+-Xmx1g
 EOF
    echo "Heap: 256m"
 
